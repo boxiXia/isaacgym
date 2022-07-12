@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assets &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -102,17 +103,17 @@
            <div itemprop="articleBody">
              
   <section id="assets">
-<h1>Assets<a class="headerlink" href="#assets" title="Permalink to this headline"></a></h1>
+<h1>Assets<a class="headerlink" href="#assets" title="Permalink to this heading"></a></h1>
 <section id="loading-assets">
-<h2>Loading Assets<a class="headerlink" href="#loading-assets" title="Permalink to this headline"></a></h2>
-<p>Gym currently supports loading URDF, MJCF, and USD file formats.  Loading an asset file creates a <code class="docutils literal notranslate"><span class="pre">GymAsset</span></code> object that includes the definiton of all the bodies, collision shapes, visual attachments, joints, and degrees of freedom (DOFs).  Soft bodies and particles are also supported with some formats.</p>
+<h2>Loading Assets<a class="headerlink" href="#loading-assets" title="Permalink to this heading"></a></h2>
+<p>Gym currently supports loading URDF and MJCF file formats.  Loading an asset file creates a <code class="docutils literal notranslate"><span class="pre">GymAsset</span></code> object that includes the definiton of all the bodies, collision shapes, visual attachments, joints, and degrees of freedom (DOFs).  Soft bodies and particles are also supported with some formats.</p>
 <p>When loading an asset, you specify the asset root directory and the asset path relative to the root.  This split is necessary because the importers sometimes need to search for external reference files like meshes or materials within the asset directory tree. The asset root directory can be specified as an absolute path or as a path relative to the current working directory.  In our Python examples, we load assets like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asset_root</span> <span class="o">=</span> <span class="s2">&quot;../../assets&quot;</span>
 <span class="n">asset_file</span> <span class="o">=</span> <span class="s2">&quot;urdf/franka_description/robots/franka_panda.urdf&quot;</span>
 <span class="n">asset</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">load_asset</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">asset_root</span><span class="p">,</span> <span class="n">asset_file</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">load_asset</span></code> method uses the file name extension to determine the asset file format.  Supported extensions include <strong>.urdf</strong> for URDF files, <strong>.xml</strong> for MJCF files, and <strong>.usd</strong>/<strong>.usda</strong> for USD files.  The Gym API also has format-specific methods that eliminate the guesswork, called <code class="docutils literal notranslate"><span class="pre">load_asset_urdf</span></code>, <code class="docutils literal notranslate"><span class="pre">load_asset_mjcf</span></code>, and <code class="docutils literal notranslate"><span class="pre">load_asset_usd</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">load_asset</span></code> method uses the file name extension to determine the asset file format.  Supported extensions include <strong>.urdf</strong> for URDF files, and <strong>.xml</strong> for MJCF files.</p>
 <p>Sometimes, you may wish to pass extra information to the asset importer.  This is accomplished by specifying an optional <code class="docutils literal notranslate"><span class="pre">AssetOptions</span></code> parameter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asset_options</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">AssetOptions</span><span class="p">()</span>
 <span class="n">asset_options</span><span class="o">.</span><span class="n">fix_base_link</span> <span class="o">=</span> <span class="kc">True</span>
@@ -122,7 +123,7 @@
 </pre></div>
 </div>
 <section id="loading-meshes-in-assets">
-<h3>Loading Meshes in Assets<a class="headerlink" href="#loading-meshes-in-assets" title="Permalink to this headline"></a></h3>
+<h3>Loading Meshes in Assets<a class="headerlink" href="#loading-meshes-in-assets" title="Permalink to this heading"></a></h3>
 <p>Gym uses Assimp to load meshes specified in assets. Some meshes can have materials or textures specified directly in the mesh file. If the asset file also specifies a material for that mesh, then the materials from the asset take priority. To use the mesh materials instead, use</p>
 <blockquote>
 <div><p>asset_options.use_mesh_materials = True.</p>
@@ -142,7 +143,7 @@
 </div></blockquote>
 </section>
 <section id="overriding-inertial-properties">
-<h3>Overriding Inertial Properties<a class="headerlink" href="#overriding-inertial-properties" title="Permalink to this headline"></a></h3>
+<h3>Overriding Inertial Properties<a class="headerlink" href="#overriding-inertial-properties" title="Permalink to this heading"></a></h3>
 <p>Inertial properties for rigid bodies are important for simulation accuracy and stability.  Each rigid body has a center of mass and an inertia tensor.  URDF and MJCF allow for specifying these values, but sometimes the values are incorrect.  For example, there are many URDF assets in the wild with seemingly arbitrary inertia tensors, which can cause undesirable simulation artifacts.  To overcome this, Isaac Gym allows for explicitly overriding the center of mass and inertia tensors using values computed from the geometries of collision shapes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asset_options</span><span class="o">.</span><span class="n">override_com</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">asset_options</span><span class="o">.</span><span class="n">override_inertia</span> <span class="o">=</span> <span class="kc">True</span>
@@ -152,7 +153,7 @@
 <p>See <code class="docutils literal notranslate"><span class="pre">python/examples/convex_decomposition.py</span></code> for sample usage.</p>
 </section>
 <section id="convex-decomposition">
-<h3>Convex Decomposition<a class="headerlink" href="#convex-decomposition" title="Permalink to this headline"></a></h3>
+<h3>Convex Decomposition<a class="headerlink" href="#convex-decomposition" title="Permalink to this heading"></a></h3>
 <p>Isaac Gym supports automatic convex decomposition of triangle meshes used for collision shapes.  This is only needed when using PhysX, since PhysX requires convex meshes for collisions (Flex is able to use triangle meshes directly).  Without convex decomposition, each triangle mesh shape is approximated using a single convex hull.  This is efficient, but a single convex hull may not accurately represent the shape of the original triangle mesh.  Convex decomposition creates a more accurate shape approximation consisting of multiple convex shapes.  This is particularly useful for applications like grasping, where the exact shape of physical objects is important.</p>
 <p>By default, convex decomposition is disabled.  You can enable it using a flag in the AssetOptions during asset import:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asset_options</span><span class="o">.</span><span class="n">vhacd_enabled</span> <span class="o">=</span> <span class="kc">True</span>
@@ -170,7 +171,7 @@
 </section>
 </section>
 <section id="procedural-assets">
-<h2>Procedural Assets<a class="headerlink" href="#procedural-assets" title="Permalink to this headline"></a></h2>
+<h2>Procedural Assets<a class="headerlink" href="#procedural-assets" title="Permalink to this heading"></a></h2>
 <p>Simple geometric assets like boxes, capsules, and spheres can be created procedurally:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asset_options</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">AssetOptions</span><span class="p">()</span>
 <span class="n">asset_options</span><span class="o">.</span><span class="n">density</span> <span class="o">=</span> <span class="mf">10.0</span>
@@ -182,22 +183,22 @@
 </div>
 </section>
 <section id="asset-options">
-<h2>Asset Options<a class="headerlink" href="#asset-options" title="Permalink to this headline"></a></h2>
+<h2>Asset Options<a class="headerlink" href="#asset-options" title="Permalink to this heading"></a></h2>
 <p>See <a class="reference internal" href="../api/python/struct_py.html#isaacgym.gymapi.AssetOptions" title="isaacgym.gymapi.AssetOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">isaacgym.gymapi.AssetOptions</span></code></a>.</p>
 </section>
 <section id="asset-introspection">
-<h2>Asset Introspection<a class="headerlink" href="#asset-introspection" title="Permalink to this headline"></a></h2>
+<h2>Asset Introspection<a class="headerlink" href="#asset-introspection" title="Permalink to this heading"></a></h2>
 <p>You can inspect the collections of components in each asset, including rigid bodies, joints, and DOFs.  See <code class="docutils literal notranslate"><span class="pre">examples/asset_info.py</span></code> for sample usage.</p>
 </section>
 <section id="creating-actors">
-<h2>Creating Actors<a class="headerlink" href="#creating-actors" title="Permalink to this headline"></a></h2>
+<h2>Creating Actors<a class="headerlink" href="#creating-actors" title="Permalink to this heading"></a></h2>
 <p>Loading or creating an asset does not automatically add it to the simulation.  A <code class="docutils literal notranslate"><span class="pre">GymAsset</span></code> serves as a blueprint for actors and can be instanced multiple times in a simulation with different poses and individualized properties, as described in the section on <a class="reference internal" href="simsetup.html#envs-and-actors"><span class="std std-ref">Environments and Actors</span></a>.</p>
 <p>If the collision filter for the actor is set to -1, the actor will use filters loaded in by the asset loaders. This is important for MJCF files that specify non-zero contypes/conaffinities or have other contacts specified.
 Setting the collision filter to 0 will enable collisions between all shapes in the actor.
 Setting the collision filter to anything &gt; 0 will disable all self collisions.</p>
 </section>
 <section id="limitations">
-<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline"></a></h2>
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading"></a></h2>
 <p>The asset pipeline is a work in progress, so there are some limitations.</p>
 <ul class="simple">
 <li><p>The URDF importer can only load meshes in OBJ format.  Many URDF models come with STL collision meshes and DAE visual meshes, but those need to be manually converted to OBJ for the current importer.</p></li>
@@ -207,7 +208,7 @@ Setting the collision filter to anything &gt; 0 will disable all self collisions
 </ul>
 </section>
 <section id="relevant-examples">
-<h2>Relevant Examples<a class="headerlink" href="#relevant-examples" title="Permalink to this headline"></a></h2>
+<h2>Relevant Examples<a class="headerlink" href="#relevant-examples" title="Permalink to this heading"></a></h2>
 <p>Take a look at the Python examples <code class="docutils literal notranslate"><span class="pre">asset_info.py</span></code> and <code class="docutils literal notranslate"><span class="pre">joint_monkey.py</span></code> for working with assets.</p>
 </section>
 </section>

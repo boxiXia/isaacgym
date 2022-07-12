@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Graphics and Camera Sensors &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -107,10 +108,10 @@
            <div itemprop="articleBody">
              
   <section id="graphics-and-camera-sensors">
-<h1>Graphics and Camera Sensors<a class="headerlink" href="#graphics-and-camera-sensors" title="Permalink to this headline"></a></h1>
+<h1>Graphics and Camera Sensors<a class="headerlink" href="#graphics-and-camera-sensors" title="Permalink to this heading"></a></h1>
 <p>Isaac Gym exposes APIs to control visual aspects of the scene programattically. Additionally, Isaac Gym exposes API to manage views from many cameras and to treat these cameras as sensors on the robot. The following sections describe camera properties, camera sensors, visual property modification, and other topics related to graphics and camera sensors.</p>
 <section id="camera-properties">
-<h2>Camera Properties<a class="headerlink" href="#camera-properties" title="Permalink to this headline"></a></h2>
+<h2>Camera Properties<a class="headerlink" href="#camera-properties" title="Permalink to this heading"></a></h2>
 <p>All cameras in Isaac Gym, including the viewer’s camera, can be created with parameters passed in a GymCameraProperties structure. The camera properties structure contains properties such as field of view, resolution, near and far clipping distances, and a few other options. When creating the viewer in the normal way:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">viewer</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">create_viewer</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">CameraProperties</span><span class="p">())</span>
 </pre></div>
@@ -139,7 +140,7 @@
 </dl>
 </section>
 <section id="camera-sensors">
-<h2>Camera Sensors<a class="headerlink" href="#camera-sensors" title="Permalink to this headline"></a></h2>
+<h2>Camera Sensors<a class="headerlink" href="#camera-sensors" title="Permalink to this heading"></a></h2>
 <p>Camera sensors in Isaac Gym are meant to simulate cameras as they would be found either observing or attached to a robot. A camera sensor can be easily created as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">camera_props</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">CameraProperties</span><span class="p">()</span>
 <span class="n">camera_props</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">128</span>
@@ -179,7 +180,7 @@
 </div>
 <p>After <code class="docutils literal notranslate"><span class="pre">render_all_camera_sensors(sim)</span></code>, all outputs from all cameras will be ready for retrieval.</p>
 <section id="camera-image-types">
-<h3>Camera Image Types<a class="headerlink" href="#camera-image-types" title="Permalink to this headline"></a></h3>
+<h3>Camera Image Types<a class="headerlink" href="#camera-image-types" title="Permalink to this heading"></a></h3>
 <p>Each camera renders a number of different output images. When accessing images, APIs take an image selector which indicates which of the output images the application would like to retrieve or access.</p>
 <dl class="simple">
 <dt>Camera Sensor Image Types:</dt><dd><ul class="simple">
@@ -201,7 +202,7 @@
 </div>
 </section>
 <section id="accessing-camera-images">
-<h3>Accessing Camera Images<a class="headerlink" href="#accessing-camera-images" title="Permalink to this headline"></a></h3>
+<h3>Accessing Camera Images<a class="headerlink" href="#accessing-camera-images" title="Permalink to this heading"></a></h3>
 <p>Images rendered with camera sensors can be accessed by calling <code class="docutils literal notranslate"><span class="pre">get_camera_image</span></code> for the desired image type as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">color_image</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">get_camera_image</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">camera_handle</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">IMAGE_COLOR</span><span class="p">)</span>
 </pre></div>
@@ -209,7 +210,7 @@
 <p>The third argument selects which image from that camera should be returned. The above code asks for the color (RGBA) image. The image is returned as a numpy array. When the image contains vector outputs, such as <code class="docutils literal notranslate"><span class="pre">IMAGE_COLOR</span></code> and <code class="docutils literal notranslate"><span class="pre">IMAGE_OPTICAL_FLOW</span></code>, these vectors are tightly packed in the fastest moving dimension.</p>
 <p>See <a class="reference internal" href="../examples/simple.html#graphics-example"><span class="std std-ref">graphics example</span></a>.</p>
 <section id="gpu-tensor-access">
-<h4>GPU Tensor Access<a class="headerlink" href="#gpu-tensor-access" title="Permalink to this headline"></a></h4>
+<h4>GPU Tensor Access<a class="headerlink" href="#gpu-tensor-access" title="Permalink to this heading"></a></h4>
 <p>When using camera sensor outputs for training a model which is already present on the GPU, a key optimization is to prevent copying the image to the CPU in Isaac Gym only to have the learning framework copy it back to the GPU. To enable better performance, Isaac Gym provides a method for direct GPU access to camera outputs without copying back to CPU memory.</p>
 <p>In order to activate tensor access, a camera must be created with the <code class="docutils literal notranslate"><span class="pre">enable_tensors</span></code> flag set to <code class="docutils literal notranslate"><span class="pre">True</span></code> in the camera properties structure.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">camera_props</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">CameraProperties</span><span class="p">()</span>
@@ -247,10 +248,10 @@
 </section>
 </section>
 <section id="visual-properties">
-<h2>Visual Properties<a class="headerlink" href="#visual-properties" title="Permalink to this headline"></a></h2>
+<h2>Visual Properties<a class="headerlink" href="#visual-properties" title="Permalink to this heading"></a></h2>
 <p>Isaac Gym contains a number of APIs designed to allow programmatic modification of visual attributes for techniques like visual domain randomization.  This section briefly touches on the routines for modifying visual attributes of a body or scene.</p>
 <section id="colors">
-<h3>Colors<a class="headerlink" href="#colors" title="Permalink to this headline"></a></h3>
+<h3>Colors<a class="headerlink" href="#colors" title="Permalink to this heading"></a></h3>
 <p>The color of any rigid body can be set with the API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span><span class="o">.</span><span class="n">set_rigid_body_color</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">actor_handle</span><span class="p">,</span> <span class="n">rigid_body_index</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">MESH_VISUAL_AND_COLLISION</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">Vec3</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 </pre></div>
@@ -263,7 +264,7 @@
 <p>When <code class="docutils literal notranslate"><span class="pre">get_rigid_body_color</span></code> is called with the mesh selector <code class="docutils literal notranslate"><span class="pre">MESH_VISUAL_AND_COLLISION</span></code>, the color of the visual mesh is returned. If the mesh contains submeshes, the color of the first submesh is returned.</p>
 </section>
 <section id="textures">
-<h3>Textures<a class="headerlink" href="#textures" title="Permalink to this headline"></a></h3>
+<h3>Textures<a class="headerlink" href="#textures" title="Permalink to this heading"></a></h3>
 <p>Isaac Gym provides two routines for creating textures from the API, one that reads a texture from a file and one that accepts a numpy array of pixels to be used as a texture. Textures are created from a file using:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">texture_handle</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">create_texture_from_file</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">texture_filename</span><span class="p">);</span>
 </pre></div>
@@ -290,12 +291,12 @@
 </div>
 <p>All textures and mesh data are automatically freed from GPU memory when the <code class="docutils literal notranslate"><span class="pre">GymSim</span></code> is destroyed.</p>
 <section id="texture-color-interaction">
-<h4>Texture &amp; Color Interaction<a class="headerlink" href="#texture-color-interaction" title="Permalink to this headline"></a></h4>
+<h4>Texture &amp; Color Interaction<a class="headerlink" href="#texture-color-interaction" title="Permalink to this heading"></a></h4>
 <p>Texture and color are multipicatively applied by the renderer. This means that the texture sample at a pixel is multiplied by the body color to calculate the resulting pixel color. For normal application of textures, set the color of the rigid body to <code class="docutils literal notranslate"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></code> when setting the texture to guarantee the correct color. However, this feature can be used to increase the space of domain randomization for a small set of textures by tinting the textures or it could be used to tint a body according to the forces it is experiencing while maintaining its texture.</p>
 </section>
 </section>
 <section id="reset">
-<h3>Reset<a class="headerlink" href="#reset" title="Permalink to this headline"></a></h3>
+<h3>Reset<a class="headerlink" href="#reset" title="Permalink to this heading"></a></h3>
 <p>At any time the color and texture for an entire actor can be reset to the original value loaded from the asset file by calling:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span><span class="o">.</span><span class="n">reset_actor_materials</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">actor</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">MESH_VISUAL_AND_COLLISION</span><span class="p">)</span>
 </pre></div>
@@ -303,7 +304,7 @@
 <p>This will reset the materials for all bodies in the actor of the specified type: visual, collision, or both.</p>
 </section>
 <section id="segmentation-id">
-<h3>Segmentation ID<a class="headerlink" href="#segmentation-id" title="Permalink to this headline"></a></h3>
+<h3>Segmentation ID<a class="headerlink" href="#segmentation-id" title="Permalink to this heading"></a></h3>
 <p>In order to differentiate different parts of the robot in the semantic segmentation ground truth image (IMAGE_SEGMENTATION), it is necessary to assign differing segmentation ID values to differing bodies. The segmentation ID of a body is set much like color and texture:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span><span class="o">.</span><span class="n">set_rigid_body_segmentation_id</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">actor_handle</span><span class="p">,</span> <span class="n">rigid_body_index</span><span class="p">,</span> <span class="n">segmentation_id</span><span class="p">)</span>
 </pre></div>
@@ -311,7 +312,7 @@
 <p>When <code class="docutils literal notranslate"><span class="pre">IMAGE_SEGMENTATION</span></code> is retrieved from a camera, any pixel which originated from the indicated body will have a value of <code class="docutils literal notranslate"><span class="pre">segmentation_id</span></code>, which is a 32-bit unsigned integer.</p>
 </section>
 <section id="lights">
-<h3>Lights<a class="headerlink" href="#lights" title="Permalink to this headline"></a></h3>
+<h3>Lights<a class="headerlink" href="#lights" title="Permalink to this heading"></a></h3>
 <p>Isaac Gym’s rendering has a limited set of lights that can be controlled programatically with the API:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span><span class="o">.</span><span class="n">set_light_parameters</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">light_index</span><span class="p">,</span> <span class="n">intensity</span><span class="p">,</span> <span class="n">ambient</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
 </pre></div>
@@ -322,7 +323,7 @@ for the light intensity, where 0 is off and 1.0 is max intensity. There is no ph
 </section>
 </section>
 <section id="lines-api">
-<h2>Lines API<a class="headerlink" href="#lines-api" title="Permalink to this headline"></a></h2>
+<h2>Lines API<a class="headerlink" href="#lines-api" title="Permalink to this heading"></a></h2>
 <p>The lines API is a simple API for drawing lines on top of the rendered image in the viewer for debugging or visualization purposes. Lines can be used to visualize contacts, applied forces, or any other vector quantity reasonably easily. The lines API is very rudimentary, with one API to add lines to an accumulator of lines, and another API to flush all lines. The API to add lines is as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span><span class="o">.</span><span class="n">add_lines</span><span class="p">(</span><span class="n">viewer</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">num_lines</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">colors</span><span class="p">)</span>
 </pre></div>
@@ -348,7 +349,7 @@ for the light intensity, where 0 is off and 1.0 is max intensity. There is no ph
 <p>Lines drawn with the Lines API are only visible in the viewer. They are not rendered into the view of camera sensors.</p>
 </section>
 <section id="camera-intrinsics">
-<h2>Camera Intrinsics<a class="headerlink" href="#camera-intrinsics" title="Permalink to this headline"></a></h2>
+<h2>Camera Intrinsics<a class="headerlink" href="#camera-intrinsics" title="Permalink to this heading"></a></h2>
 <p>Some advanced uses of Isaac Gym, such as deprojecting depth images to 3D point clouds, requires complete knowledge of the projection terms used to create the output images. To aid in this, Isaac Gym provides access to the projection and view matrix used to render a camera’s view. They are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">projection_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">get_camera_proj_matrix</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">camera_handle</span><span class="p">))</span>
 
@@ -358,7 +359,7 @@ for the light intensity, where 0 is off and 1.0 is max intensity. There is no ph
 <p>Both of these functions return a numpy array, which is converted to a numpy matrix in the code samples above.</p>
 </section>
 <section id="step-graphics">
-<h2>Step Graphics<a class="headerlink" href="#step-graphics" title="Permalink to this headline"></a></h2>
+<h2>Step Graphics<a class="headerlink" href="#step-graphics" title="Permalink to this heading"></a></h2>
 <p>When rendering is required, transforms and information must be communicated from the physics simulation into the graphics system. In order to support use cases in which graphics and physics are not running at the same update rate, e.g. if graphics is rendering only every Nth step, Isaac Gym allows manual control over this process. This is further important when many camera sensors are used as the renderer must know when it has moved to a new frame in time, but render() calls are not implicitly frame boundaries since there may be many render() calls per step for viewers and camera sensors. The frame boundary update is made explicit with the <code class="docutils literal notranslate"><span class="pre">step_graphics(sim)</span></code> API.</p>
 <p>In most cases, however, <code class="docutils literal notranslate"><span class="pre">step_graphics()</span></code> will be called immediately before a call to <code class="docutils literal notranslate"><span class="pre">draw_viewer()</span></code> and/or <code class="docutils literal notranslate"><span class="pre">render_all_camera_sensors()</span></code> as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="ow">not</span> <span class="n">gym</span><span class="o">.</span><span class="n">query_viewer_has_closed</span><span class="p">(</span><span class="n">viewer</span><span class="p">):</span>

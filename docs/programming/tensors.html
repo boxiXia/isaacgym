@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tensor API &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -110,13 +111,13 @@
            <div itemprop="articleBody">
              
   <section id="tensor-api">
-<span id="id1"></span><h1>Tensor API<a class="headerlink" href="#tensor-api" title="Permalink to this headline"></a></h1>
+<span id="id1"></span><h1>Tensor API<a class="headerlink" href="#tensor-api" title="Permalink to this heading"></a></h1>
 <p>The Gym tensor API uses GPU-compatible data representations for interacting with simulations.  It allows accessing the physics state directly on the GPU without copying data back and forth from the host.  It also supports applying controls using tensors, which makes it possible to set up experiments that run fully on the GPU.</p>
 <p>Tensors are essentially multi-dimensional arrays of values.  The Gym tensor API works with “global” tensors, i.e., tensors that hold the values for all actors in the simulation.  For example, a single tensor is used to hold the state of all the rigid bodies in the simulation.  Similarly, a single tensor can be used to apply controls to all actors in the simulation.  This approach has important performance benefits.  You can get the latest state of all actors or apply controls to all actors using a single function call.  This eliminates the need for looping over multiple environments and issuing per-actor operations, which can add considerable overhead, especially in languages like Python.  Using global buffers also facilitates data parallelism, particularly on the GPU, where multiple threads can easily work with different slices of the buffers in parallel.</p>
 <p>Tensors are well-established data structures for storing GPU-compatible data.  Popular frameworks like PyTorch and TensorFlow support tensors as a core feature.  The Gym tensor API is independent of other frameworks, but it is designed to be easily compatible with them.  The Gym tensor API uses simple tensor desciptors, which specify the device, memory address, data type, and shape of a tensor.  There is no special API for manipulating the data in the Gym tensors.  Instead, the tensor descriptors can be converted to more usable tensor types, like PyTorch tensors, using interop utilities.  Once a Gym tensor is “wrapped” in a PyTorch tensor, you can use all of the existing PyTorch utilties to work with the contents of the tensor.</p>
 <p>An important aspect of the tensor API is that it can work with CPU and GPU tensors.  This makes it possible to run the same experiment on both CPU and GPU with minimal effort.</p>
 <section id="simulation-setup">
-<h2>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Permalink to this headline"></a></h2>
+<h2>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Permalink to this heading"></a></h2>
 <p>The tensor API is meant to be used during simulation, after all the environments and actors have been created.  To set up the simulation, you can use the “classic” API described in <a class="reference internal" href="simsetup.html#creating-simulations"><span class="std std-ref">Creating a Simulation</span></a>.  To use the tensor API, there are a few additional details to be aware of.</p>
 <p>The tensor API is currently available with PhysX only, so you must use <code class="docutils literal notranslate"><span class="pre">SIM_PHYSX</span></code> when creating the simulation.</p>
 <p>To use GPU tensors, you must set the <code class="docutils literal notranslate"><span class="pre">use_gpu_pipeline</span></code> flag to True in the <code class="docutils literal notranslate"><span class="pre">SimParams</span></code> used to create the simulation.  Also, you should configure PhysX to use the GPU:</p>
@@ -136,11 +137,11 @@
 </div>
 </section>
 <section id="physics-state">
-<span id="physics-state-tensors"></span><h2>Physics State<a class="headerlink" href="#physics-state" title="Permalink to this headline"></a></h2>
+<span id="physics-state-tensors"></span><h2>Physics State<a class="headerlink" href="#physics-state" title="Permalink to this heading"></a></h2>
 <p>After calling <code class="docutils literal notranslate"><span class="pre">prepare_sim</span></code>, you can acquire the physics state tensors.  These tensors represent a cache of the simulation state in an easy-to-use format.  It is important to note that these tensors hold a copy of the simulation state.  They are not the same data structures as used by the underlying physics engine.  Each physics engine uses its own data representation and the tensors exposed by Gym are a generic representation that abstracts the underlying details.</p>
 <p>Even though the tensors are a copy of the physics state, the process of copying is very fast.  When using the GPU pipeline, the data is never copied to the host.  Device-to-device copies are fast, so the overhead is minimal.  Furthermore, users can control when to refresh the tensors, so no implicit copying is ever done.</p>
 <section id="actor-root-state-tensor">
-<h3>Actor Root State Tensor<a class="headerlink" href="#actor-root-state-tensor" title="Permalink to this headline"></a></h3>
+<h3>Actor Root State Tensor<a class="headerlink" href="#actor-root-state-tensor" title="Permalink to this heading"></a></h3>
 <p>A Gym actor can consists of one or more rigid bodies.  All actors have a root body.  The root state tensor holds the state of all the actor root bodies in the simulation.  The state of each root body is represented using 13 floats with the same layout as <code class="docutils literal notranslate"><span class="pre">GymRigidBodyState</span></code>: 3 floats for position, 4 floats for quaternion, 3 floats for linear velocity, and 3 floats for angular velocity.</p>
 <p>To acquire the root state tensor:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_root_tensor</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">acquire_actor_root_state_tensor</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
@@ -235,7 +236,7 @@
 <p>To avoid some common errors when sharing PyTorch tensors with Gym (and particularly index tensors), please read the <a class="reference internal" href="#tensor-lifetime"><span class="std std-ref">Tensor Lifetime</span></a> section.</p>
 </section>
 <section id="degrees-of-freedom">
-<h3>Degrees-of-Freedom<a class="headerlink" href="#degrees-of-freedom" title="Permalink to this headline"></a></h3>
+<h3>Degrees-of-Freedom<a class="headerlink" href="#degrees-of-freedom" title="Permalink to this heading"></a></h3>
 <p>Articulated actors have a number of degrees-of-freedom (DOFs) whose state can be queried and changed.  The state of each DOF is represented using two 32-bit floats, the DOF position and DOF velocity.  For prismatic (translation) DOFs, the position is in meters and the velocity is in meters per second.  For revolute (rotation) DOFs, the position is in radians and the velocity is in radians per second.</p>
 <p>The DOF state tensor contains the state of all DOFs in the simulation.  The shape of the tensor is (num_dofs, 2).  The total number of DOFs can be obtained by calling <code class="docutils literal notranslate"><span class="pre">gym.get_sim_dof_count(sim)</span></code>.  The DOF states are laid out sequentially.  The tensor begins with all the DOFs of actor 0, followed by all the DOFs of actor 1, and so on.  The ordering of DOFs for each actor is the same as with the functions <code class="docutils literal notranslate"><span class="pre">get_actor_dof_states</span></code> and <code class="docutils literal notranslate"><span class="pre">set_actor_dof_states</span></code>.  The number of DOFs for an actor can be obtained using <code class="docutils literal notranslate"><span class="pre">gym.get_actor_dof_count(env,</span> <span class="pre">actor)</span></code>.  The global index of a specific DOF in the tensor can be obtained in a number of ways:</p>
 <ul class="simple">
@@ -272,7 +273,7 @@
 </div>
 </section>
 <section id="all-rigid-body-states">
-<h3>All Rigid Body States<a class="headerlink" href="#all-rigid-body-states" title="Permalink to this headline"></a></h3>
+<h3>All Rigid Body States<a class="headerlink" href="#all-rigid-body-states" title="Permalink to this heading"></a></h3>
 <p>The rigid body state tensor contains the state of all rigid bodies in the simulation.  The state of each rigid body is the same as described for the root state tensor - 13 floats capturing the position, orientation, linear velocity, and angular velocity.  The shape of the rigid body state tensor is (num_rigid_bodies, 13).  The total number of rigid bodies in a simulation can be obtained by calling <code class="docutils literal notranslate"><span class="pre">gym.get_sim_rigid_body_count(sim)</span></code>.  The rigid body states are laid out sequentially.  The tensor begins with all the bodies of actor 0, followed by all the bodies of actor 1, and so on.  The ordering of bodies for each actor is the same as with the functions <code class="docutils literal notranslate"><span class="pre">get_actor_rigid_body_states</span></code> and <code class="docutils literal notranslate"><span class="pre">set_actor_rigid_body_states</span></code>.  The number of rigid bodies for an actor can be obtained using <code class="docutils literal notranslate"><span class="pre">gym.get_actor_rigid_body_count(env,</span> <span class="pre">actor)</span></code>.  The global index of a specific rigid body in the tensor can be obtained in a number of ways:</p>
 <ul class="simple">
 <li><p>Calling <code class="docutils literal notranslate"><span class="pre">gym.get_actor_rigid_body_index(env,</span> <span class="pre">actor_handle,</span> <span class="pre">i,</span> <span class="pre">gymapi.DOMAIN_SIM)</span></code> will return the global rigid body index of the ith rigid body of the specified actor.</p></li>
@@ -290,7 +291,7 @@
 <p>Presently, the rigid body state tensor is read-only.  Setting rigid body states is only allowed for actor root bodies using the root state tensor.</p>
 </section>
 <section id="jacobians-and-mass-matrices">
-<h3>Jacobians and Mass Matrices<a class="headerlink" href="#jacobians-and-mass-matrices" title="Permalink to this headline"></a></h3>
+<h3>Jacobians and Mass Matrices<a class="headerlink" href="#jacobians-and-mass-matrices" title="Permalink to this heading"></a></h3>
 <p>The Jacobian and mass matrices are important tools in robotic control. The Jacobian matrix maps the joint space velocities of a DOF to it’s cartesian and angular velocities, while the mass matrix contains the generalized mass of the robot depending on the current configuration. They are used in standard robotic control algorithms such as Inverse Kinematics or Operational Space Control.</p>
 <p>Both Jacobians and mass matrices are exposed using tensors.  The approach is slightly different than other tensor functions, because the size of Jacobian and mass matrices can vary by actor type.  When acquiring a Jacobian or mass matrix tensor, you must specify the actor name.  The tensor will then contain the matrices for all the actors with that name across all environments - assuming that each actor with that name is of the same type.  The actor name is provided when calling <code class="docutils literal notranslate"><span class="pre">create_actor</span></code>.  The rest of this section assumes that there is an actor named “franka” in every env that is an instance of the <a class="reference internal" href="../examples/assets.html#franka-asset"><span class="std std-ref">Franka asset</span></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># acquire the jacobian and mass matrix tensors for all actors named &quot;franka&quot;</span>
@@ -342,7 +343,7 @@
 </section>
 </section>
 <section id="contact-tensors">
-<h2>Contact Tensors<a class="headerlink" href="#contact-tensors" title="Permalink to this headline"></a></h2>
+<h2>Contact Tensors<a class="headerlink" href="#contact-tensors" title="Permalink to this heading"></a></h2>
 <p>The net contact force tensor contains the net contact forces experienced by each rigid body during the last simulation step, with the forces expressed as 3D vectors.  It is a read-only tensor with shape (num_rigid_bodies, 3).  You can index individual rigid bodies in the same way as the rigid body state tensor.</p>
 <p>The function <code class="docutils literal notranslate"><span class="pre">acquire_net_contact_force_tensor</span></code> returns a Gym tensor descriptor, which can be wrapped as a PyTorch tensor as previously discussed:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_net_cf</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">acquire_net_contact_force_tensor</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
@@ -361,14 +362,14 @@
 </div>
 </section>
 <section id="force-sensors">
-<h2>Force Sensors<a class="headerlink" href="#force-sensors" title="Permalink to this headline"></a></h2>
+<h2>Force Sensors<a class="headerlink" href="#force-sensors" title="Permalink to this heading"></a></h2>
 <p>You can create rigid body and joint force sensors as described here: <a class="reference internal" href="forcesensors.html#force-sensors"><span class="std std-ref">Force sensors</span></a>.</p>
 </section>
 <section id="control-tensors">
-<span id="id2"></span><h2>Control Tensors<a class="headerlink" href="#control-tensors" title="Permalink to this headline"></a></h2>
+<span id="id2"></span><h2>Control Tensors<a class="headerlink" href="#control-tensors" title="Permalink to this heading"></a></h2>
 <p>The various state tensors (root state tensor, DOF state tensor, and rigid body state tensor) are useful for getting information about actors and setting new poses and velocities instantaneously.  Setting states this way is appropriate during resets, when actors need to return to their original pose or restart a task using new initial conditions.  However, setting new states directly using those tensors should be done sparingly.  The positions and velocities of actors are managed by the physics engine, which takes into account collisions, external forces, internal constraints, and drives.  Setting new positions and velocities directly should generally be avoided during simulation, because it overrides the physics engine and leads to non-physical behavior.  To manage actor behavior during simulation, you can apply DOF forces or PD controls using the following API.</p>
 <section id="dof-controls">
-<h3>DOF Controls<a class="headerlink" href="#dof-controls" title="Permalink to this headline"></a></h3>
+<h3>DOF Controls<a class="headerlink" href="#dof-controls" title="Permalink to this heading"></a></h3>
 <p>The function <code class="docutils literal notranslate"><span class="pre">set_dof_actuation_force_tensor</span></code> can be used to apply forces for all DOFs in the simulation.  For example, here is how you can apply a random force to all DOFs with PyTorch:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get total number of DOFs</span>
 <span class="n">num_dofs</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">get_sim_dof_count</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
@@ -386,7 +387,7 @@
 <p>There are indexed variants of the tensor-based control functions, which can be used to control a subset of actors specified in an index tensor, similarly to <code class="docutils literal notranslate"><span class="pre">set_dof_state_tensor_indexed</span></code>.  They are called <code class="docutils literal notranslate"><span class="pre">set_dof_actuation_force_tensor_indexed</span></code>, <code class="docutils literal notranslate"><span class="pre">set_dof_position_target_tensor_indexed</span></code>, and <code class="docutils literal notranslate"><span class="pre">set_dof_velocity_tensor_indexed</span></code>.</p>
 </section>
 <section id="body-forces">
-<h3>Body Forces<a class="headerlink" href="#body-forces" title="Permalink to this headline"></a></h3>
+<h3>Body Forces<a class="headerlink" href="#body-forces" title="Permalink to this heading"></a></h3>
 <p>You can apply forces to rigid bodies using two different functions.  The function <code class="docutils literal notranslate"><span class="pre">apply_rigid_body_force_tensors</span></code> can be used to apply forces and/or torques at the center-of-mass of each rigid body in the simulation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># apply both forces and torques</span>
 <span class="n">gym</span><span class="o">.</span><span class="n">apply_rigid_body_force_tensors</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">force_tensor</span><span class="p">,</span> <span class="n">torque_tensor</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">ENV_SPACE</span><span class="p">)</span>
@@ -409,9 +410,9 @@
 </section>
 </section>
 <section id="common-problems">
-<h2>Common Problems<a class="headerlink" href="#common-problems" title="Permalink to this headline"></a></h2>
+<h2>Common Problems<a class="headerlink" href="#common-problems" title="Permalink to this heading"></a></h2>
 <section id="tensor-lifetime">
-<span id="id3"></span><h3>Tensor Lifetime<a class="headerlink" href="#tensor-lifetime" title="Permalink to this headline"></a></h3>
+<span id="id3"></span><h3>Tensor Lifetime<a class="headerlink" href="#tensor-lifetime" title="Permalink to this heading"></a></h3>
 <p>Python uses reference counting for garbage collection.  Tensors created using PyTorch are subject to garbage collection as well, just like any regular Python objects.  The Gym C++ runtime is a shared library that is not connected with the Python interpreter, so it doesn’t participate in the reference counting of objects.  When passing tensors to Gym, it is important to ensure that Python will not garbage-collect the objects while they are still in use.  This can be a source of tricky memory errors that are difficult to debug.</p>
 <p>One common situation where this can occur is when sharing index tensors with Gym.  PyTorch uses LongTensors for indexing, but Gym requires 32-bit indices.  Thus we need to convert a LongTensor to a 32-bit integer tensor before passing the indices to Gym.  Consider this code:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indices_torch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">42</span><span class="p">])</span>
@@ -430,7 +431,7 @@
 </section>
 </section>
 <section id="limitations">
-<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline"></a></h2>
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading"></a></h2>
 <p>The tensor API is currently only supported for the PhysX backend.</p>
 <p>There are also some limitations when using the tensor API with the GPU pipeline.  These don’t apply with the CPU pipeline, but it is important to keep them in mind when writing code meant to run on both CPU and GPU.</p>
 <p>A tensor “setter” function, such as <code class="docutils literal notranslate"><span class="pre">set_actor_root_state_tensor_indexed</span></code>, should be called only once per step.  In other words, there should only be one call to a specific setter function in between calls to <code class="docutils literal notranslate"><span class="pre">gym.simulate</span></code>.  Instead of calling the function multiple times for different sets of actors, combine the actor indices in such a way that they can be updated in a single call.  For example, this code:</p>

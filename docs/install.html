@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installation &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -94,9 +95,9 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Ubuntu 18.04 or 20.04.</p></li>
 <li><p>Python 3.6, 3.7 or 3.8.</p></li>
@@ -108,10 +109,10 @@
 </ul>
 </section>
 <section id="set-up-the-python-package">
-<h2>Set up the Python package<a class="headerlink" href="#set-up-the-python-package" title="Permalink to this headline"></a></h2>
+<h2>Set up the Python package<a class="headerlink" href="#set-up-the-python-package" title="Permalink to this heading"></a></h2>
 <p>Setting up Gym will automatically install all of the Python package dependencies, including numpy and PyTorch.  You can install everything in an existing Python environment or create a brand new conda environment.  Creating a new conda environment is a safer option, because all of the packages will be installed with versions that are known to work, and there is no risk of messing up your existing Python environments with incompatible package versions.</p>
 <section id="install-in-an-existing-python-environment">
-<h3>Install in an existing Python environment<a class="headerlink" href="#install-in-an-existing-python-environment" title="Permalink to this headline"></a></h3>
+<h3>Install in an existing Python environment<a class="headerlink" href="#install-in-an-existing-python-environment" title="Permalink to this heading"></a></h3>
 <p>In the <code class="docutils literal notranslate"><span class="pre">python</span></code> subdirectory, run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
 </pre></div>
@@ -126,7 +127,7 @@
 </div>
 </section>
 <section id="install-in-a-new-conda-environment">
-<h3>Install in a new conda environment<a class="headerlink" href="#install-in-a-new-conda-environment" title="Permalink to this headline"></a></h3>
+<h3>Install in a new conda environment<a class="headerlink" href="#install-in-a-new-conda-environment" title="Permalink to this heading"></a></h3>
 <p>In the root directory, run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">create_conda_env_rlgpu</span><span class="o">.</span><span class="n">sh</span>
 </pre></div>
@@ -142,7 +143,7 @@
 </div>
 </section>
 <section id="install-in-a-docker-container">
-<h3>Install in a Docker container<a class="headerlink" href="#install-in-a-docker-container" title="Permalink to this headline"></a></h3>
+<h3>Install in a Docker container<a class="headerlink" href="#install-in-a-docker-container" title="Permalink to this heading"></a></h3>
 <p>This installation method is experimental, but may be useful for running RL training in certain environments.</p>
 <p>Follow <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker">these instructions</a> to install the NVIDIA Container Toolkit on your system. In the root directory, run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">docker</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">sh</span>
@@ -155,7 +156,7 @@
 <p>Note that you can pass in an optional &lt;display&gt; argument to the <code class="docutils literal notranslate"><span class="pre">run.sh</span></code> script, which will allow viewer support when running from inside the docker container. To retrieve the name of your display, refer to the output from <code class="docutils literal notranslate"><span class="pre">xdpyinfo</span></code>.</p>
 </section>
 <section id="install-example-rl-environments">
-<h3>Install Example RL Environments<a class="headerlink" href="#install-example-rl-environments" title="Permalink to this headline"></a></h3>
+<h3>Install Example RL Environments<a class="headerlink" href="#install-example-rl-environments" title="Permalink to this heading"></a></h3>
 <p>We provide example reinforcement learning environments that can be trained with Isaac Gym. For more details, please visit <a class="reference external" href="https://github.com/NVIDIA-Omniverse/IsaacGymEnvs">https://github.com/NVIDIA-Omniverse/IsaacGymEnvs</a> and follow the setup instructions in the README.</p>
 <p>Simply clone the IsaacGymEnvs repository and run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
@@ -164,9 +165,9 @@
 </section>
 </section>
 <section id="testing-the-installation">
-<h2>Testing the installation<a class="headerlink" href="#testing-the-installation" title="Permalink to this headline"></a></h2>
+<h2>Testing the installation<a class="headerlink" href="#testing-the-installation" title="Permalink to this heading"></a></h2>
 <section id="simple-example">
-<h3>Simple example<a class="headerlink" href="#simple-example" title="Permalink to this headline"></a></h3>
+<h3>Simple example<a class="headerlink" href="#simple-example" title="Permalink to this heading"></a></h3>
 <p>To test the installation, you can run the examples from the <code class="docutils literal notranslate"><span class="pre">python/examples</span></code> subdirectory, like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">joint_monkey</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
@@ -176,7 +177,7 @@
 <img alt="_images/joint_monkey.png" src="_images/joint_monkey.png" />
 </section>
 <section id="reinforcement-learning-example">
-<h3>Reinforcement learning example<a class="headerlink" href="#reinforcement-learning-example" title="Permalink to this headline"></a></h3>
+<h3>Reinforcement learning example<a class="headerlink" href="#reinforcement-learning-example" title="Permalink to this heading"></a></h3>
 <p>You can also run a reinforcement learning task to test GPU simulation and Pytorch integration.
 This requires setting up the IsaacGymEnvs repository (<a class="reference external" href="https://github.com/NVIDIA-Omniverse/IsaacGymEnvs">https://github.com/NVIDIA-Omniverse/IsaacGymEnvs</a>). Please follow instructions in the README for setting up the IsaacGymEnvs repository and for launching a reinforcement learning task.
 The “Cartpole” task is a good simple environment to test and should train in less than 5 seconds in headless mode.</p>
@@ -184,7 +185,7 @@ The “Cartpole” task is a good simple environment to test and should train in
 </section>
 </section>
 <section id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline"></a></h2>
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h2>
 <p>Isaac Gym is under intense development and things break occasionally.</p>
 <p>If you run into crashes or other problems when running the examples:</p>
 <ul class="simple">
@@ -193,7 +194,7 @@ The “Cartpole” task is a good simple environment to test and should train in
 <li><p>On systems with integrated Intel graphics, make sure that the NVIDIA GPU is selected.  For example, on Ubuntu 18.04, you can run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">prime-select</span> <span class="pre">nvidia</span></code>. If you have multiple Vulkan devices visible when running <code class="docutils literal notranslate"><span class="pre">vulkaninfo</span></code>, you may need to explicitly force use of your NVIDIA GPU. You can do this as follows: <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json</span></code></p></li>
 </ul>
 <section id="for-anaconda-users">
-<h3>For Anaconda Users<a class="headerlink" href="#for-anaconda-users" title="Permalink to this headline"></a></h3>
+<h3>For Anaconda Users<a class="headerlink" href="#for-anaconda-users" title="Permalink to this heading"></a></h3>
 <p>If you see an error like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">ImportError</span><span class="p">:</span> <span class="n">libpython3</span><span class="mf">.7</span><span class="n">m</span><span class="o">.</span><span class="n">so</span><span class="mf">.1.0</span><span class="p">:</span> <span class="n">cannot</span> <span class="nb">open</span> <span class="n">shared</span> <span class="nb">object</span> <span class="n">file</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span>
 </pre></div>

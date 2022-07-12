@@ -299,3 +299,8 @@ Different heightfield terrain types are generated using: ``random_uniform_terrai
 They are then converted to a triangle mesh using ``convert_heightfield_to_trimesh()`` and added to the simulation with ``gym.add_triangle_mesh()``.
  
 .. image:: ../images/terrain.png
+
+Spherical Joint (spherical_joint.py)
+--------------------------------------
+This example demonstrates the support of spherical joints in URDF file and how to control an articulated cuboid with 6 DOF, 3 prismatic + 1 spherical to reach a changing goal orientation (indicated by the axis geometry).
+

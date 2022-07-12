@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulation Setup &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -104,7 +105,7 @@
            <div itemprop="articleBody">
              
   <section id="simulation-setup">
-<h1>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Permalink to this headline"></a></h1>
+<h1>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Permalink to this heading"></a></h1>
 <p>Isaac Gym provides a simulation interface that lets you create dynamic environments for training intelligent agents.  The API is procedural and data-oriented rather than object-oriented.  This facilitates efficient exchange of information between the core implementation written in C++ and client scripts written in Python.  For example, rather than working with hierarchical collections of body and joint objects, Isaac Gym uses flat data arrays to represent the state and controls of the simulation.  This makes it easy to work with the data using common Python libraries like NumPy, which provides efficient methods to manipulate multidimensional arrays.  It is also possible to access the simulation data as CPU or GPU tensors that can be shared with common deep learning frameworks like PyTorch.</p>
 <p>The core API, including supporting data types and constants, is defined in the <code class="docutils literal notranslate"><span class="pre">gymapi</span></code> module:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">isaacgym</span> <span class="kn">import</span> <span class="n">gymapi</span>
@@ -115,7 +116,7 @@
 </pre></div>
 </div>
 <section id="creating-a-simulation">
-<span id="creating-simulations"></span><h2>Creating a Simulation<a class="headerlink" href="#creating-a-simulation" title="Permalink to this headline"></a></h2>
+<span id="creating-simulations"></span><h2>Creating a Simulation<a class="headerlink" href="#creating-a-simulation" title="Permalink to this heading"></a></h2>
 <p>The <strong>gym</strong> object by itself doesn’t do very much.  It only serves as a proxy for the Gym API.  To create a simulation, you need to call the <code class="docutils literal notranslate"><span class="pre">create_sim</span></code> method:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sim_params</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">SimParams</span><span class="p">()</span>
 <span class="n">sim</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">create_sim</span><span class="p">(</span><span class="n">compute_device_id</span><span class="p">,</span> <span class="n">graphics_device_id</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">SIM_PHYSX</span><span class="p">,</span> <span class="n">sim_params</span><span class="p">)</span>
@@ -132,7 +133,7 @@
 </div></blockquote>
 <p>The last argument to <code class="docutils literal notranslate"><span class="pre">create_sim</span></code> contains additional simulation parameters, discussed below.</p>
 <section id="simulation-parameters">
-<h3>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Permalink to this headline"></a></h3>
+<h3>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Permalink to this heading"></a></h3>
 <p>The simulation parameters allow you to configure the details of physics simulation.  The settings may vary depending on the physics engine and the characteristics of the task to be simulated.  Picking the right parameters is important for simulation stability and performance.  The folling snippet shows examples of physics parameters:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get default set of parameters</span>
 <span class="n">sim_params</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">SimParams</span><span class="p">()</span>
@@ -173,7 +174,7 @@
 </ul>
 </div></blockquote>
 <section id="up-axis">
-<h4>Up Axis<a class="headerlink" href="#up-axis" title="Permalink to this headline"></a></h4>
+<h4>Up Axis<a class="headerlink" href="#up-axis" title="Permalink to this heading"></a></h4>
 <p>Isaac Gym supports both y-up and z-up simulations.  Although z-up is more common in robotics and research communities, Gym defaults to y-up for legacy reasons.  This may change in the future, but in the meantime it is not hard to create a z-up simulation.  The most important thing is to configure the <code class="docutils literal notranslate"><span class="pre">up_axis</span></code> and <code class="docutils literal notranslate"><span class="pre">gravity</span></code> in <code class="docutils literal notranslate"><span class="pre">SimParams</span></code> when creating the simulation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sim_params</span><span class="o">.</span><span class="n">up_axis</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">UP_AXIS_Z</span>
 <span class="n">sim_params</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">Vec3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.8</span><span class="p">)</span>
@@ -183,7 +184,7 @@
 </section>
 </section>
 <section id="creating-a-ground-plane">
-<h3>Creating a Ground Plane<a class="headerlink" href="#creating-a-ground-plane" title="Permalink to this headline"></a></h3>
+<h3>Creating a Ground Plane<a class="headerlink" href="#creating-a-ground-plane" title="Permalink to this heading"></a></h3>
 <p>Most simulations need a ground plane, unless they take place in zero gravity.  You can configure and create the ground plane like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># configure the ground plane</span>
 <span class="n">plane_params</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">PlaneParams</span><span class="p">()</span>
@@ -202,15 +203,15 @@
 </section>
 </section>
 <section id="loading-assets">
-<h2>Loading Assets<a class="headerlink" href="#loading-assets" title="Permalink to this headline"></a></h2>
-<p>Gym currently supports loading URDF, MJCF, and USD file formats.  Loading an asset file creates a <code class="docutils literal notranslate"><span class="pre">GymAsset</span></code> object that includes the definiton of all the bodies, collision shapes, visual attachments, joints, and degrees of freedom (DOFs).  Soft bodies and particles are also supported with some formats.</p>
+<h2>Loading Assets<a class="headerlink" href="#loading-assets" title="Permalink to this heading"></a></h2>
+<p>Gym currently supports loading URDF and MJCF file formats.  Loading an asset file creates a <code class="docutils literal notranslate"><span class="pre">GymAsset</span></code> object that includes the definiton of all the bodies, collision shapes, visual attachments, joints, and degrees of freedom (DOFs).  Soft bodies and particles are also supported with some formats.</p>
 <p>When loading an asset, you specify the asset root directory and the asset path relative to the root.  This split is necessary because the importers sometimes need to search for external reference files like meshes or materials within the asset directory tree.  The asset root directory can be specified as an absolute path or as a path relative to the current working directory.  In our Python examples, we load assets like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asset_root</span> <span class="o">=</span> <span class="s2">&quot;../../assets&quot;</span>
 <span class="n">asset_file</span> <span class="o">=</span> <span class="s2">&quot;urdf/franka_description/robots/franka_panda.urdf&quot;</span>
 <span class="n">asset</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">load_asset</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">asset_root</span><span class="p">,</span> <span class="n">asset_file</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">load_asset</span></code> method uses the file name extension to determine the asset file format.  Supported extensions include <strong>.urdf</strong> for URDF files, <strong>.xml</strong> for MJCF files, and <strong>.usd</strong>/<strong>.usda</strong> for USD files.  The Gym API also has format-specific methods that eliminate the guesswork, called <code class="docutils literal notranslate"><span class="pre">load_asset_urdf</span></code>, <code class="docutils literal notranslate"><span class="pre">load_asset_mjcf</span></code>, and <code class="docutils literal notranslate"><span class="pre">load_asset_usd</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">load_asset</span></code> method uses the file name extension to determine the asset file format.  Supported extensions include <strong>.urdf</strong> for URDF files, and <strong>.xml</strong> for MJCF files.</p>
 <p>Sometimes, you may wish to pass extra information to the asset importer.  This is accomplished by specifying an optional <code class="docutils literal notranslate"><span class="pre">AssetOptions</span></code> parameter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">asset_options</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">AssetOptions</span><span class="p">()</span>
 <span class="n">asset_options</span><span class="o">.</span><span class="n">fix_base_link</span> <span class="o">=</span> <span class="kc">True</span>
@@ -223,7 +224,7 @@
 <p>Loading an asset does not automatically add it to the simulation.  A <code class="docutils literal notranslate"><span class="pre">GymAsset</span></code> serves as a blueprint for actors and can be instanced multiple times in a simulation with different poses and individualized properties.</p>
 </section>
 <section id="environments-and-actors">
-<span id="envs-and-actors"></span><h2>Environments and Actors<a class="headerlink" href="#environments-and-actors" title="Permalink to this headline"></a></h2>
+<span id="envs-and-actors"></span><h2>Environments and Actors<a class="headerlink" href="#environments-and-actors" title="Permalink to this heading"></a></h2>
 <figure class="align-default" id="id1">
 <img alt="../_images/franka_cube_ik.png" src="../_images/franka_cube_ik.png" />
 <figcaption>
@@ -291,7 +292,7 @@
 <p>Presently, the procedural API for setting up the environments has some limitations.  It is assumed that all environments are created and populated in sequence.  You create an environment and add all the actors to it, then create another environment and add all its actors to it, and so on.  Once you finish populating one environment and start populating the next one, you can no longer add actors to the previous environment.  This has to do with how the data is organized internally to facilitate an efficient batch indexing scheme for the state cache.  This restriction may be lifted in the future, but for now be aware of the limitations.  This implies that you cannot add or remove actors in an environment after you finish setting it up.  There are ways to “fake” having a dynamic number of actors in an environment, which will be discussed in another section.</p>
 </section>
 <section id="running-the-simulation">
-<h2>Running the Simulation<a class="headerlink" href="#running-the-simulation" title="Permalink to this headline"></a></h2>
+<h2>Running the Simulation<a class="headerlink" href="#running-the-simulation" title="Permalink to this heading"></a></h2>
 <p>After setting up the environment grid and other parameters, you can begin simulating.  This is typically done in a loop where each iteration of the loop corresponds to one time step:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="c1"># step the physics</span>
@@ -302,7 +303,7 @@
 <p>Isaac Gym offers a variety of ways to query the state of the world and apply controls.  You can also gather sensor snapshots and connect with external learning frameworks.  These topics will be discussed in subsequent chapters.</p>
 </section>
 <section id="adding-a-viewer">
-<h2>Adding a Viewer<a class="headerlink" href="#adding-a-viewer" title="Permalink to this headline"></a></h2>
+<h2>Adding a Viewer<a class="headerlink" href="#adding-a-viewer" title="Permalink to this heading"></a></h2>
 <p>By default, the simulation does not create any visual feedback window.  This allows the simulations to run on headless workstations or clusters with no monitors attached.  When developing and testing, however, it is useful to be able to visualize the simulation. Isaac Gym comes with a simple integrated viewer that lets you see what’s going on in the simulation.</p>
 <p>You create a viewer like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cam_props</span> <span class="o">=</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">CameraProperties</span><span class="p">()</span>
@@ -340,7 +341,7 @@
 </div>
 <p>Fullscreen mode for the viewer can be toggled with F11 when the viewer is in focus.</p>
 <section id="the-viewer-gui">
-<h3>The Viewer GUI<a class="headerlink" href="#the-viewer-gui" title="Permalink to this headline"></a></h3>
+<h3>The Viewer GUI<a class="headerlink" href="#the-viewer-gui" title="Permalink to this heading"></a></h3>
 <p>When a viewer is created, a simple graphical user interface will be shown on the left side of the screen. Display of the GUI can be toggled on and off with the ‘Tab’ key.</p>
 <p>The GUI has 4 separate tabs: <strong>Actors</strong>, <strong>Sim</strong>, <strong>Viewer</strong>, and <strong>Perf</strong>.</p>
 <ul class="simple">
@@ -367,7 +368,7 @@
 </ul>
 </section>
 <section id="custom-mouse-keyboard-input">
-<h3>Custom Mouse/Keyboard Input<a class="headerlink" href="#custom-mouse-keyboard-input" title="Permalink to this headline"></a></h3>
+<h3>Custom Mouse/Keyboard Input<a class="headerlink" href="#custom-mouse-keyboard-input" title="Permalink to this heading"></a></h3>
 <p>To get mouse/keyboard input from the viewer, action events can be subscribed to and queried. For an example of how to do this, look at <code class="docutils literal notranslate"><span class="pre">examples/projectiles.py</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span><span class="o">.</span><span class="n">subscribe_viewer_keyboard_event</span><span class="p">(</span><span class="n">viewer</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">KEY_SPACE</span><span class="p">,</span> <span class="s2">&quot;space_shoot&quot;</span><span class="p">)</span>
 <span class="n">gym</span><span class="o">.</span><span class="n">subscribe_viewer_keyboard_event</span><span class="p">(</span><span class="n">viewer</span><span class="p">,</span> <span class="n">gymapi</span><span class="o">.</span><span class="n">KEY_R</span><span class="p">,</span> <span class="s2">&quot;reset&quot;</span><span class="p">)</span>
@@ -382,7 +383,7 @@
 </section>
 </section>
 <section id="cleanup">
-<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline"></a></h2>
+<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this heading"></a></h2>
 <p>At exit, the sim and viewer objects should be released as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gym</span><span class="o">.</span><span class="n">destroy_viewer</span><span class="p">(</span><span class="n">viewer</span><span class="p">)</span>
 <span class="n">gym</span><span class="o">.</span><span class="n">destroy_sim</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>

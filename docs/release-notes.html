@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Release Notes &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -46,24 +47,30 @@
 <li class="toctree-l1"><a class="reference internal" href="about_gym.html">About Isaac Gym</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preview4">1.0.preview4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-features">New Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bug-fixes-and-improvements">Bug fixes and improvements</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#preview3">1.0.preview3</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#driver-requirement">Driver Requirement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#api-changes">API Changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rl-environment-changes">RL Environment Changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bug-fixes-and-improvements">Bug fixes and improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Bug fixes and improvements</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#preview2">1.0.preview2</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#api-command-line-parameter-changes">API + Command Line Parameter Changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#new-features">New Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">New Features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#preview1">1.0.preview1</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">New Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">New Features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#removed-features">Removed Features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Bug Fixes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#known-issues-and-limitations">Known Issues and Limitations</a></li>
@@ -98,17 +105,44 @@
            <div itemprop="articleBody">
              
   <section id="release-notes">
-<h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline"></a></h1>
+<h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this heading"></a></h1>
+<section id="preview4">
+<h2>1.0.preview4<a class="headerlink" href="#preview4" title="Permalink to this heading"></a></h2>
+<section id="general">
+<h3>General<a class="headerlink" href="#general" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>This release aligns the PhysX implementation in standalone Preview Isaac Gym with Omniverse Isaac Sim 2022.1 to simplify migration to Omniverse for RL workloads</p></li>
+</ul>
+</section>
+<section id="new-features">
+<h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>PhysX backend: Added support for SDF collisions with a nut &amp; bolt example.</p></li>
+<li><p>PhysX backend: Enabled gyroscopic forces by default to improve simulation (can disable with <code class="docutils literal notranslate"><span class="pre">asset_options.enable_gyroscopic_forces</span> <span class="pre">=</span> <span class="pre">False</span></code>).</p></li>
+<li><p>PhysX backend: Allow customizing <code class="docutils literal notranslate"><span class="pre">rest_offset</span></code> and <code class="docutils literal notranslate"><span class="pre">contact_offset</span></code> per asset and per individual shape.</p></li>
+<li><p>Added parsing of spherical (ball) joints support in URDF importer.</p></li>
+</ul>
+</section>
+<section id="bug-fixes-and-improvements">
+<h3>Bug fixes and improvements<a class="headerlink" href="#bug-fixes-and-improvements" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>PhysX: Improved elastic collision behaviour.</p></li>
+<li><p>PhysX: Fixed a bug when resetting some fixe-base actors.</p></li>
+<li><p>Fixed an issue with PhysX material property caching affecting dynamically changing friction properties, such as during domain randomization.</p></li>
+<li><p>Fixed an issue with friction mode for triangle meshes and heightfields; in previous releases this was incorrectly set to multiply mode. With this release we use average mode, like all other shapes in the simulation.</p></li>
+</ul>
+</section>
+</section>
 <section id="preview3">
-<h2>1.0.preview3<a class="headerlink" href="#preview3" title="Permalink to this headline"></a></h2>
+<h2>1.0.preview3<a class="headerlink" href="#preview3" title="Permalink to this heading"></a></h2>
 <section id="driver-requirement">
-<h3>Driver Requirement<a class="headerlink" href="#driver-requirement" title="Permalink to this headline"></a></h3>
+<h3>Driver Requirement<a class="headerlink" href="#driver-requirement" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>NVIDIA Driver version 470+ is now required.</p></li>
 </ul>
 </section>
 <section id="api-changes">
-<h3>API Changes<a class="headerlink" href="#api-changes" title="Permalink to this headline"></a></h3>
+<h3>API Changes<a class="headerlink" href="#api-changes" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Force sensors are now defined on assets, not individual actors (see force sensor documentation).</p></li>
 <li><p>Added optional ForceSensorProperties to fine-tune how forces are reported (see force sensor documentation).</p></li>
@@ -118,14 +152,14 @@
 </ul>
 </section>
 <section id="rl-environment-changes">
-<h3>RL Environment Changes<a class="headerlink" href="#rl-environment-changes" title="Permalink to this headline"></a></h3>
+<h3>RL Environment Changes<a class="headerlink" href="#rl-environment-changes" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>RL framework and all RL environments are moved to <a class="reference external" href="https://github.com/NVIDIA-Omniverse/IsaacGymEnvs">https://github.com/NVIDIA-Omniverse/IsaacGymEnvs</a>.</p></li>
 <li><p>RL docs can now be found at <a class="reference external" href="https://github.com/NVIDIA-Omniverse/IsaacGymEnvs/blob/main/README.md">https://github.com/NVIDIA-Omniverse/IsaacGymEnvs/blob/main/README.md</a> and in the docs folder. Please refer to the framework docs for changes required to update existing RL environments.</p></li>
 </ul>
 </section>
-<section id="bug-fixes-and-improvements">
-<h3>Bug fixes and improvements<a class="headerlink" href="#bug-fixes-and-improvements" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h3>Bug fixes and improvements<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Increased the limits on the number of actor bodies and joints with PhysX.</p></li>
 <li><p>Fixed a bug with randomization of rigid body properties with the GPU pipeline.</p></li>
@@ -138,9 +172,9 @@
 </section>
 </section>
 <section id="preview2">
-<h2>1.0.preview2<a class="headerlink" href="#preview2" title="Permalink to this headline"></a></h2>
+<h2>1.0.preview2<a class="headerlink" href="#preview2" title="Permalink to this heading"></a></h2>
 <section id="api-command-line-parameter-changes">
-<h3>API + Command Line Parameter Changes<a class="headerlink" href="#api-command-line-parameter-changes" title="Permalink to this headline"></a></h3>
+<h3>API + Command Line Parameter Changes<a class="headerlink" href="#api-command-line-parameter-changes" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Command line arguments for simulation API and device selection have changed, and are now aligned between the RL examples and general programming examples:</p>
 <ul>
@@ -180,8 +214,8 @@
 <li><p>Contents in docker image are now placed under <code class="docutils literal notranslate"><span class="pre">/opt</span></code> instead of <code class="docutils literal notranslate"><span class="pre">/workspace</span></code>.</p></li>
 </ul>
 </section>
-<section id="new-features">
-<h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline"></a></h3>
+<section id="id2">
+<h3>New Features<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Asset handling</p>
 <ul>
@@ -235,7 +269,7 @@
 </ul>
 </section>
 <section id="bug-fixes">
-<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline"></a></h3>
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Fixed issue with observation and action noise.</p></li>
 <li><p>Fixed joint limit ranges for CMU and NV humanoids.</p></li>
@@ -267,9 +301,9 @@
 </section>
 </section>
 <section id="preview1">
-<h2>1.0.preview1<a class="headerlink" href="#preview1" title="Permalink to this headline"></a></h2>
-<section id="id1">
-<h3>New Features<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h2>1.0.preview1<a class="headerlink" href="#preview1" title="Permalink to this heading"></a></h2>
+<section id="id3">
+<h3>New Features<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Implemented end-to-end GPU pipeline for physics simulation, which allows interacting with simulations on the GPU without copying data to or from the host.</p></li>
 <li><p>Added new Tensor API for physics state and control, on both CPU and GPU.</p></li>
@@ -306,7 +340,7 @@
 </ul>
 </section>
 <section id="removed-features">
-<h3>Removed Features<a class="headerlink" href="#removed-features" title="Permalink to this headline"></a></h3>
+<h3>Removed Features<a class="headerlink" href="#removed-features" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Removed Python multiprocessing support, which is superseded by the new Tensor API.</p></li>
 <li><p>Removed old <code class="docutils literal notranslate"><span class="pre">rlbase</span></code> module and examples, which are replaced by the new RL framework designed around the Tensor API.</p></li>
@@ -314,14 +348,14 @@
 </ul>
 </section>
 <section id="changes">
-<h3>Changes<a class="headerlink" href="#changes" title="Permalink to this headline"></a></h3>
+<h3>Changes<a class="headerlink" href="#changes" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Renamed package from <code class="docutils literal notranslate"><span class="pre">carbongym</span></code> to <code class="docutils literal notranslate"><span class="pre">isaacgym</span></code>.</p></li>
 <li><p>Improved quaternion-Euler conversion utilities.</p></li>
 </ul>
 </section>
-<section id="id2">
-<h3>Bug Fixes<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<section id="id4">
+<h3>Bug Fixes<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>Numerous physics bug fixes and simulation stability improvements.</p></li>
 <li><p>Fixes and improvements to URDF and MJCF importers.</p></li>
@@ -330,7 +364,7 @@
 </section>
 </section>
 <section id="known-issues-and-limitations">
-<h2>Known Issues and Limitations<a class="headerlink" href="#known-issues-and-limitations" title="Permalink to this headline"></a></h2>
+<h2>Known Issues and Limitations<a class="headerlink" href="#known-issues-and-limitations" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Most of the rigid body tensor API is only available with PhysX.</p></li>
 <li><p>Soft body support is currently only available with FleX.</p></li>

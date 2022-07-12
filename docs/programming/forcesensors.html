@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Force Sensors &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -100,9 +101,9 @@
            <div itemprop="articleBody">
              
   <section id="force-sensors">
-<span id="id1"></span><h1>Force Sensors<a class="headerlink" href="#force-sensors" title="Permalink to this headline"></a></h1>
+<span id="id1"></span><h1>Force Sensors<a class="headerlink" href="#force-sensors" title="Permalink to this heading"></a></h1>
 <section id="rigid-body-force-sensors">
-<h2>Rigid Body Force Sensors<a class="headerlink" href="#rigid-body-force-sensors" title="Permalink to this headline"></a></h2>
+<h2>Rigid Body Force Sensors<a class="headerlink" href="#rigid-body-force-sensors" title="Permalink to this heading"></a></h2>
 <p>Force sensors can be attached to rigid bodies to measure forces and torques experienced at user-specified reference frames.  The readings represent the net forces and torques experienced by the parent body, which include external forces, contact forces, and internal forces applied by the solver (e.g., due to joint drives).  A body resting on the ground plane will have a net force of zero.</p>
 <p>Force sensors are created on assets.  This way, you only need to define the force sensors once and they will be created on every actor instanced from the asset.</p>
 <p>To create a force sensor, you specify the rigid body index to which the sensor will be attached and the relative pose of the sensor with respect to the body origin.  Multiple sensors can be attached to the same body:</p>
@@ -142,7 +143,7 @@
 <p>Two sensors attached to the same body will report the same force, but will generally differ in torques if their relative poses are different.  Forces are measured at the body’s center of mass, but torques are measured at the sensor’s local reference frame.</p>
 <p>The total number of force sensors in a simulation can be obtained by calling <code class="docutils literal notranslate"><span class="pre">gym.get_sim_force_sensor_count(sim)</span></code>.</p>
 <section id="tensor-api">
-<h3>Tensor API<a class="headerlink" href="#tensor-api" title="Permalink to this headline"></a></h3>
+<h3>Tensor API<a class="headerlink" href="#tensor-api" title="Permalink to this heading"></a></h3>
 <p>The function <code class="docutils literal notranslate"><span class="pre">acquire_force_sensor_tensor</span></code> returns a Gym tensor descriptor, which can be wrapped as a PyTorch tensor as discussed in the <a class="reference internal" href="tensors.html#tensor-api"><span class="std std-ref">Tensor API documentation</span></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_fsdata</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">acquire_force_sensor_tensor</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
 <span class="n">fsdata</span> <span class="o">=</span> <span class="n">gymtorch</span><span class="o">.</span><span class="n">wrap_tensor</span><span class="p">(</span><span class="n">_fsdata</span><span class="p">)</span>
@@ -155,12 +156,12 @@
 </div>
 </section>
 <section id="limitations">
-<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline"></a></h3>
+<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading"></a></h3>
 <p>Force sensors are currently only available with the PhysX backend.</p>
 </section>
 </section>
 <section id="joint-force-sensors">
-<h2>Joint Force Sensors<a class="headerlink" href="#joint-force-sensors" title="Permalink to this headline"></a></h2>
+<h2>Joint Force Sensors<a class="headerlink" href="#joint-force-sensors" title="Permalink to this heading"></a></h2>
 <p>To enable reading forces on each degree-of-freedom of articulated actors, call the <code class="docutils literal notranslate"><span class="pre">enable_actor_dof_force_sensors</span></code> method when setting up the envs:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actor</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">create_actor</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 <span class="n">gym</span><span class="o">.</span><span class="n">enable_actor_dof_force_sensors</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">actor</span><span class="p">)</span>
@@ -172,7 +173,7 @@
 </div>
 <p>This returns a numpy array of total forces acting on this actor’s DOFs.  Note that the returned forces will always be zero if <code class="docutils literal notranslate"><span class="pre">enable_actor_dof_force_sensors</span></code> was not previously called on the actor.</p>
 <section id="id2">
-<h3>Tensor API<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<h3>Tensor API<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <p>The function <code class="docutils literal notranslate"><span class="pre">acquire_dof_force_tensor</span></code> returns a Gym tensor descriptor, which can be wrapped as a PyTorch tensor as discussed in the <a class="reference internal" href="tensors.html#tensor-api"><span class="std std-ref">Tensor API documentation</span></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_forces</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">acquire_dof_force_tensor</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
 <span class="n">forces</span> <span class="o">=</span> <span class="n">gymtorch</span><span class="o">.</span><span class="n">wrap_tensor</span><span class="p">(</span><span class="n">_forces</span><span class="p">)</span>
@@ -185,7 +186,7 @@
 </div>
 </section>
 <section id="id3">
-<h3>Limitations<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<h3>Limitations<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <p>DOF force sensors are only supported in the PhysX backend.</p>
 </section>
 </section>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About Isaac Gym &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -80,9 +81,9 @@
            <div itemprop="articleBody">
              
   <section id="about-isaac-gym">
-<h1>About Isaac Gym<a class="headerlink" href="#about-isaac-gym" title="Permalink to this headline"></a></h1>
+<h1>About Isaac Gym<a class="headerlink" href="#about-isaac-gym" title="Permalink to this heading"></a></h1>
 <section id="what-is-isaac-gym">
-<h2>What is Isaac Gym?<a class="headerlink" href="#what-is-isaac-gym" title="Permalink to this headline"></a></h2>
+<h2>What is Isaac Gym?<a class="headerlink" href="#what-is-isaac-gym" title="Permalink to this heading"></a></h2>
 <p>Isaac Gym is NVIDIA’s prototype physics simulation environment for reinforcement learning research.</p>
 <p>Isaac Gym allows developers to experiment with end-to-end GPU accelerated RL for physically based systems. Unlike other similar ‘gym’ style systems, in Isaac Gym, simulation can run on the GPU, storing results in GPU tensors rather than copying them back to CPU memory. A tensor-based API is provided to access these results, allowing RL observation and reward calculations to also take place on the GPU.</p>
 <p>This combination permits thousand of environments to be simultaneously simulated on a single GPU, allowing experiments that previously may have required an entire data center to run on a single workstation.</p>
@@ -97,13 +98,13 @@
 </ul>
 </section>
 <section id="how-does-isaac-gym-relate-to-omniverse-and-isaac-sim">
-<h2>How does Isaac Gym relate to Omniverse and Isaac Sim?<a class="headerlink" href="#how-does-isaac-gym-relate-to-omniverse-and-isaac-sim" title="Permalink to this headline"></a></h2>
+<h2>How does Isaac Gym relate to Omniverse and Isaac Sim?<a class="headerlink" href="#how-does-isaac-gym-relate-to-omniverse-and-isaac-sim" title="Permalink to this heading"></a></h2>
 <p>Isaac Gym, in its current prototype incarnation, is a standalone system that does not directly interface with other NVIDIA simulation or robotics products, though it does use the same underlying PhysX simulation engine under the hood.</p>
 <p>While <a class="reference external" href="https://developer.nvidia.com/nvidia-omniverse-platform">Omniverse</a> and the Omniverse-based <a class="reference external" href="https://developer.nvidia.com/isaac-sim">Isaac Sim</a> use Pixar’s USD scene description language to describe the environments to be simulated, Isaac Gym environment setup requires the use of Python code and custom APIs, though it can also import robot descriptions from URDF and MJCF format files.</p>
 <p>Rendering in Isaac Gym is relatively basic, and does not support either ray tracing or the more sophisticated synthetic data sensors provided in Omniverse.</p>
 </section>
 <section id="the-future-of-isaac-gym">
-<h2>The Future of Isaac Gym<a class="headerlink" href="#the-future-of-isaac-gym" title="Permalink to this headline"></a></h2>
+<h2>The Future of Isaac Gym<a class="headerlink" href="#the-future-of-isaac-gym" title="Permalink to this heading"></a></h2>
 <p>The tensor-based API for physics simulation at the core of Isaac Gym will be made available in future releases of NVIDIA’s Omniverse Platform, however the APIs used for environment setup will switch over to being based on USD. During the course of migrating to Omniverse, some features and APIs will undoubtedly change, while new APIs to support additional Omniverse functionality such as advanced rendering and soft body simulation will also be added.</p>
 <p>More information about the transition of Isaac Gym functionality into Omniverse will be shared in the NVIDIA Dev Talk Forums when it is available.</p>
 <p>In the meantime, we invite researchers and academics to explore the potential of GPU-based reinforcement learning, and to provide feedback to us on your experience!</p>

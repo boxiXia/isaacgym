@@ -1,6 +1,31 @@
 Release Notes
 ##############
 
+1.0.preview4
+=============
+
+General
+-------
+
+- This release aligns the PhysX implementation in standalone Preview Isaac Gym with Omniverse Isaac Sim 2022.1 to simplify migration to Omniverse for RL workloads
+
+New Features
+-------------
+
+- PhysX backend: Added support for SDF collisions with a nut & bolt example.
+- PhysX backend: Enabled gyroscopic forces by default to improve simulation (can disable with ``asset_options.enable_gyroscopic_forces = False``).
+- PhysX backend: Allow customizing ``rest_offset`` and ``contact_offset`` per asset and per individual shape.
+- Added parsing of spherical (ball) joints support in URDF importer.
+
+Bug fixes and improvements
+---------------------------
+
+- PhysX: Improved elastic collision behaviour.
+- PhysX: Fixed a bug when resetting some fixe-base actors.
+- Fixed an issue with PhysX material property caching affecting dynamically changing friction properties, such as during domain randomization.
+- Fixed an issue with friction mode for triangle meshes and heightfields; in previous releases this was incorrectly set to multiply mode. With this release we use average mode, like all other shapes in the simulation.
+
+
 1.0.preview3
 =============
 

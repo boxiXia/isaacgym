@@ -106,7 +106,7 @@ The ``distance`` parameter defines the distance of the plane from the origin.  T
 Loading Assets
 ***************
 
-Gym currently supports loading URDF, MJCF, and USD file formats.  Loading an asset file creates a ``GymAsset`` object that includes the definiton of all the bodies, collision shapes, visual attachments, joints, and degrees of freedom (DOFs).  Soft bodies and particles are also supported with some formats.
+Gym currently supports loading URDF and MJCF file formats.  Loading an asset file creates a ``GymAsset`` object that includes the definiton of all the bodies, collision shapes, visual attachments, joints, and degrees of freedom (DOFs).  Soft bodies and particles are also supported with some formats.
 
 When loading an asset, you specify the asset root directory and the asset path relative to the root.  This split is necessary because the importers sometimes need to search for external reference files like meshes or materials within the asset directory tree.  The asset root directory can be specified as an absolute path or as a path relative to the current working directory.  In our Python examples, we load assets like this::
 
@@ -114,7 +114,7 @@ When loading an asset, you specify the asset root directory and the asset path r
     asset_file = "urdf/franka_description/robots/franka_panda.urdf"
     asset = gym.load_asset(sim, asset_root, asset_file)
 
-The ``load_asset`` method uses the file name extension to determine the asset file format.  Supported extensions include **.urdf** for URDF files, **.xml** for MJCF files, and **.usd**/**.usda** for USD files.  The Gym API also has format-specific methods that eliminate the guesswork, called ``load_asset_urdf``, ``load_asset_mjcf``, and ``load_asset_usd``.
+The ``load_asset`` method uses the file name extension to determine the asset file format.  Supported extensions include **.urdf** for URDF files, and **.xml** for MJCF files.
 
 Sometimes, you may wish to pass extra information to the asset importer.  This is accomplished by specifying an optional ``AssetOptions`` parameter::
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulation Tuning &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -99,17 +100,17 @@
            <div itemprop="articleBody">
              
   <section id="simulation-tuning">
-<h1>Simulation Tuning<a class="headerlink" href="#simulation-tuning" title="Permalink to this headline"></a></h1>
+<h1>Simulation Tuning<a class="headerlink" href="#simulation-tuning" title="Permalink to this heading"></a></h1>
 <p>There are many factors that affect simulation stability and performance.</p>
 <section id="simulation-parameters">
-<span id="tuning-sim-params"></span><h2>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Permalink to this headline"></a></h2>
+<span id="tuning-sim-params"></span><h2>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">SimParams</span></code> allow you to specify parameters for the physics solver.</p>
 </section>
 <section id="simulation-parameters-tuning">
-<h2>Simulation Parameters Tuning<a class="headerlink" href="#simulation-parameters-tuning" title="Permalink to this headline"></a></h2>
+<h2>Simulation Parameters Tuning<a class="headerlink" href="#simulation-parameters-tuning" title="Permalink to this heading"></a></h2>
 <p>Either PhysX CPU or Flex could be used as a simulation backend. Support of PhysX GPU Articulation Solver will be added soon. There are 2 common parameters that could be tuned to improved performance and/or simulation stability - timestep and number of substeps and a number of engine specific parameters. Deformable object simulation is supported only be Flex at the moment.</p>
 <section id="common-parameters">
-<h3>Common Parameters<a class="headerlink" href="#common-parameters" title="Permalink to this headline"></a></h3>
+<h3>Common Parameters<a class="headerlink" href="#common-parameters" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>dt</strong> - Simulation timestep, the default is <strong>1/60 s</strong></p></li>
 <li><p><strong>substeps</strong> - Number of simulation substeps, the default is <strong>2</strong>. The effective simulation timestep is <strong>dt/substeps</strong>.</p></li>
@@ -117,7 +118,7 @@
 <p>The <strong>dt</strong> parameter is the time step used to advance the simulation, in seconds.  Accurate and stable physics simulation requires fairly short timesteps, generally under 1/50th of a second. Time steps that are too long can lead to instabilities, especially with fast-moving objects, strong forces, or complex articulated assemblies. In addition to advancing the simulation, you will typically have some code for querying the state of the world and applying controls during every iteration of the loop. The <strong>dt</strong> parameter, then, determines the frequency at which you interact with the simulation.  Quite often, the frequency of that interaction is lower than the frequency required for stable physics simulation.  The <strong>num_substeps</strong> parameter can be used to subdivide each timestep into equal sub-intervals to achieve a stable physics simulation.  In the snippet above, <strong>dt</strong> is 1/60, so you can interact with the simulation 60 times during every simulated second.  But <strong>num_substeps</strong> is 2, which means that the physics simulation advances in increments of 1/120 seconds. These are the default simulation parameters.</p>
 </section>
 <section id="flex">
-<h3>Flex<a class="headerlink" href="#flex" title="Permalink to this headline"></a></h3>
+<h3>Flex<a class="headerlink" href="#flex" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>solver_type</strong> - there are 6 constraint solvers available for Flex, numbered as follows:</p></li>
 <li><p><strong>0 - XPBD (GPU)</strong> - a position-based solver that uses an iterative descent method, this method is less accurate than the Newton solvers (below), but generally fast and robust for moderately stiff systems.</p></li>
@@ -145,7 +146,7 @@ In addition to increasing number of substeps making shapeCollisionDistance large
 <p>Shape representation in Flex is through triangle meshes - all primitive shapes including spheres, capsules, and boxes are represented internally by triangle meshes stored in a GPU BVH structure (spheres and capsules can be thought of as a single degenerate triangle + thickness). This unified representation means Flex can handle non-convex and arbitrary triangle meshes for dynamic physical shapes, however unlike e.g.: convex polyhedra, triangle soups do not generally define “inside/outside” regions. This means once interpenetration occurs it cannot be resolved in a well defined way. To avoid interpenetrations it is recommended to use a sufficient thickness layer on the collision shapes.</p>
 </section>
 <section id="physx">
-<h3>PhysX<a class="headerlink" href="#physx" title="Permalink to this headline"></a></h3>
+<h3>PhysX<a class="headerlink" href="#physx" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>num_threads</strong> - number of CPU cores used by PhysX. Default is 4. Setting to 0 will run the simulation on the thread that calls PxScene::simulate().  A value greater than 0 will spawn numCores-1 worker</p></li>
 <li><p><strong>solver_type</strong> -type of solver used. The default and recommended to use is 1 - <strong>TGS</strong>: temporal gauss seidel solver. It is a non-linear iterative solver.</p></li>
@@ -164,7 +165,7 @@ If PGS is used, substepping has a much bigger influence on sim quality than incr
 If TGS is used, substepping and iterations are more similar in terms of how they impact convergence. Iterations are much cheaper than a substep, but not as cheap as the PGS solver. Whenever possible, using TGS instead of PGS is highly recommended. Other parameters that may influence stability are: shape contact offset (margin), rest offset (inflation)</p>
 </section>
 <section id="scene-parameters">
-<h3>Scene parameters<a class="headerlink" href="#scene-parameters" title="Permalink to this headline"></a></h3>
+<h3>Scene parameters<a class="headerlink" href="#scene-parameters" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>bounce_threshold_velocity</strong> - relative velocity required to trigger a bounce. The default is 0.2 m/s, which is some cases could be pretty high. Reducing could give a more natural bouncing behaviour, for example in case of bouncing balls.</p></li>
 <li><p><strong>friction_offset_threshold</strong> - the contact distance at which friction starts being computed. The default is 0.04 m. If a very small objects are simulated, it should be decreased.</p></li>
@@ -172,7 +173,7 @@ If TGS is used, substepping and iterations are more similar in terms of how they
 </ul>
 </section>
 <section id="physx-visual-debugger-pvd">
-<h3>PhysX Visual Debugger (PVD)<a class="headerlink" href="#physx-visual-debugger-pvd" title="Permalink to this headline"></a></h3>
+<h3>PhysX Visual Debugger (PVD)<a class="headerlink" href="#physx-visual-debugger-pvd" title="Permalink to this heading"></a></h3>
 <p>The PhysX Visual Debugger (PVD) allows you to visualize, debug, and interact with physical scene representation when PhysX simulation is used:
 <a class="reference external" href="https://developer.nvidia.com/pvd-tutorials">https://developer.nvidia.com/pvd-tutorials</a></p>
 <p>PVD will only work if you are using the PhysX backend.</p>

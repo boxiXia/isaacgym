@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terrains &mdash; Isaac Gym  documentation</title>
@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -91,7 +92,7 @@
            <div itemprop="articleBody">
              
   <section id="terrains">
-<h1>Terrains<a class="headerlink" href="#terrains" title="Permalink to this headline"></a></h1>
+<h1>Terrains<a class="headerlink" href="#terrains" title="Permalink to this heading"></a></h1>
 <p>In addition to the API provided for adding flat ground planes into simulation environments, we also provide APIs and utilities for generating uneven terrains.
 Terrains can be added as static triangle meshes using <code class="docutils literal notranslate"><span class="pre">gym.add_triangle_mesh()</span></code>. We provide utilities to generate some simple terrains in <code class="docutils literal notranslate"><span class="pre">isaacgym/terrain_utils.py</span></code>.
 Different heightfield terrain types can be generated using: <code class="docutils literal notranslate"><span class="pre">random_uniform_terrain()</span></code>, <code class="docutils literal notranslate"><span class="pre">sloped_terrain()</span></code>, <code class="docutils literal notranslate"><span class="pre">pyramid_sloped_terrain()</span></code>, <code class="docutils literal notranslate"><span class="pre">discrete_obstacles_terrain()</span></code>, <code class="docutils literal notranslate"><span class="pre">wave_terrain()</span></code>, <code class="docutils literal notranslate"><span class="pre">stairs_terrain()</span></code>, <code class="docutils literal notranslate"><span class="pre">pyramid_stairs_terrain()</span></code>, and <code class="docutils literal notranslate"><span class="pre">stepping_stones_terrain()</span></code>.
@@ -101,7 +102,7 @@ They can then be converted to a triangle mesh using <code class="docutils litera
 <p>We also showcase an example of Reinforcement Learning with uneven terrain in our AnymalTerrain environment, which can be found at <a class="reference external" href="https://github.com/NVIDIA-Omniverse/IsaacGymEnvs">https://github.com/NVIDIA-Omniverse/IsaacGymEnvs</a>.</p>
 <img alt="../_images/anymal_on_terrain.png" src="../_images/anymal_on_terrain.png" />
 <section id="net-contact-force-issue">
-<h2>Net Contact Force Issue<a class="headerlink" href="#net-contact-force-issue" title="Permalink to this headline"></a></h2>
+<h2>Net Contact Force Issue<a class="headerlink" href="#net-contact-force-issue" title="Permalink to this heading"></a></h2>
 <p>The net contact force reporting (<code class="docutils literal notranslate"><span class="pre">gym.acquire_net_contact_force_tensor()</span></code>) of rigid bodies colliding with triangle meshes is known to be unreliable at the moment.
 Due to interactions with triangle edges the reported forces can be largely reduced or even completely missed at some timesteps.
 The net contact force reporting will be improved in the future. As a workaround we propose to use force sensors (<code class="docutils literal notranslate"><span class="pre">gym.create_asset_force_sensor()</span></code>) or filter the reported contact net contact forces in the environment.</p>
